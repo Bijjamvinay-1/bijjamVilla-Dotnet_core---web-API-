@@ -42,9 +42,31 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
+                return StatusCode(StatusCodes.Status500InternalServerError,
                     $"Error occured while retriving villa with ID {id}: {ex.Message}");
             }
         }
+        [HttpPost]
+        public async Task<ActionResult<villa>> CreateVillas(villa villa)
+        {
+            try
+            {
+                if (villa == null)
+                {
+                    return BadRequest("Villa data is required");
+                }
+
+                 await _db.villa.AddAsync(villa);
+                await _db.SaveChangesAsync();
+                return Ok(villa);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error occured while creating the  villa : {ex.Message}");
+            }
+        }
     }
+    
+
 }
