@@ -3,6 +3,7 @@ using bijjamVilla__Dotnet_core___web_API_.Data;
 using bijjamVilla__Dotnet_core___web_API_.Model;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace bijjamVilla__Dotnet_core___web_API_.Controllers
 {
@@ -16,9 +17,9 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             _db = db;
         }
         [HttpGet]
-        public IEnumerable<villa> GetVillas()                      
+        public async Task<ActionResult<IEnumerable<villa>>> GetVillas()                      
         {
-            return _db.villa.ToList();
+            return Ok (await _db.villa.ToListAsync());
         }
 
         [HttpGet("{id:Int}")]    
