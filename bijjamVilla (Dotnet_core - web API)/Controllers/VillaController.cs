@@ -9,7 +9,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
 {
     [Route("api/villas")]
     [ApiController]
-    public class VillaController : ControllerBase      
+    public class VillaController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
         public VillaController(ApplicationDbContext db)
@@ -17,15 +17,34 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             _db = db;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<villa>>> GetVillas()                      
+        public async Task<ActionResult<IEnumerable<villa>>> GetVillas()
         {
-            return Ok (await _db.villa.ToListAsync());
+            return Ok(await _db.villa.ToListAsync());
         }
 
-        [HttpGet("{id:Int}")]    
-        public string GetVillas(int id)
+        [HttpGet("{id:Int}")]
+        public async Task<ActionResult<villa>> GetVillas(int id)
         {
-            return "Get Villa with id: " + id;
+            try
+            {
+                if (id <= 0)
+                {
+                    return BadRequest("Villa ID must be greater then 0");
+                }
+
+                var villa = await _db.villa.FirstOrDefaultAsync(v => v.Id == id);
+                if (villa == null)
+                {
+                    return NotFound($"Villa with ID {id} Was not Found");
+                }
+
+                return Ok(villa);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, 
+                    $"Error occured while retriving villa with ID {id}: {ex.Message}");
+            }
         }
     }
 }
