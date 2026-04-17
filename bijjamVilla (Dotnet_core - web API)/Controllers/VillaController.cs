@@ -1,19 +1,27 @@
 ﻿
+using bijjamVilla__Dotnet_core___web_API_.Data;
+using bijjamVilla__Dotnet_core___web_API_.Model;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace bijjamVilla__Dotnet_core___web_API_.Controllers
 {
     [Route("api/villas")]
     [ApiController]
-    public class VillaController : ControllerBase      //if it is a MVC then we can use only Controller instead   of ControllerBase.
+    public class VillaController : ControllerBase      
     {
-        [HttpGet]
-        public string GetVillas()
+        private readonly ApplicationDbContext _db;
+        public VillaController(ApplicationDbContext db)
         {
-            return "Get Villa";
+            _db = db;
+        }
+        [HttpGet]
+        public IEnumerable<villa> GetVillas()                      
+        {
+            return _db.villa.ToList();
         }
 
-        [HttpGet("{id:Int}")]    // Route parameter Binding
+        [HttpGet("{id:Int}")]    
         public string GetVillas(int id)
         {
             return "Get Villa with id: " + id;
