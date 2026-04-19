@@ -1,5 +1,6 @@
 ﻿
 using bijjamVilla__Dotnet_core___web_API_.Data;
+using bijjamVilla__Dotnet_core___web_API_.DTO;
 using bijjamVilla__Dotnet_core___web_API_.Model;
 
 using Microsoft.AspNetCore.Mvc;
@@ -47,18 +48,29 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<villa>> CreateVillas(villa villa)
+        public async Task<ActionResult<villa>> CreateVillas(villaCreateDTO villaDTO)
         {
             try
             {
-                if (villa == null)
+                if (villaDTO == null)
                 {
                     return BadRequest("Villa data is required");
                 }
 
-                 await _db.villa.AddAsync(villa);
+                villa Villa = new()
+                {
+                    Name = villaDTO.Name,
+                    Details = villaDTO.Details,
+                    ImageUrl = villaDTO.ImageUrl,
+                    Occupancy = villaDTO.Occupancy,
+                    Sqft = villaDTO.Sqft,
+                    Rate = villaDTO.Rate,
+                    CreatedDate = DateTime.Now
+                };
+                    
+                 await _db.villa.AddAsync(Villa);
                 await _db.SaveChangesAsync();
-                return Ok(villa);
+                return Ok(villaDTO);
             }
             catch (Exception ex)
             {
