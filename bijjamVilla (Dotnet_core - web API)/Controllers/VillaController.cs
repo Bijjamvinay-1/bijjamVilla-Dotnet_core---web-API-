@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+
 using bijjamVilla__Dotnet_core___web_API_.Data;
 using bijjamVilla__Dotnet_core___web_API_.DTO;
 using bijjamVilla__Dotnet_core___web_API_.Model;
@@ -13,9 +15,11 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
     public class VillaController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
-        public VillaController(ApplicationDbContext db)
+        private readonly IMapper _mapper;
+        public VillaController(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<villa>>> GetVillas()
@@ -56,17 +60,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                 {
                     return BadRequest("Villa data is required");
                 }
-
-                villa Villa = new()
-                {
-                    Name = villaDTO.Name,
-                    Details = villaDTO.Details,
-                    ImageUrl = villaDTO.ImageUrl,
-                    Occupancy = villaDTO.Occupancy,
-                    Sqft = villaDTO.Sqft,
-                    Rate = villaDTO.Rate,
-                    CreatedDate = DateTime.Now
-                };
+                villa Villa = _mapper.Map<villa>(villaDTO);
                     
                  await _db.villa.AddAsync(Villa);
                 await _db.SaveChangesAsync();

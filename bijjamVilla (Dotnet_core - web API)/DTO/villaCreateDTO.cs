@@ -2,7 +2,7 @@
 
 namespace bijjamVilla__Dotnet_core___web_API_.DTO
 {
-    public class villaCreateDTO
+    public class villaCreateDTO    // Data Transfer Object
     {
         [MaxLength (50)]
         [Required]
