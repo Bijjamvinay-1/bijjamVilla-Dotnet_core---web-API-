@@ -72,6 +72,41 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                     $"Error occured while creating the  villa : {ex.Message}");
             }
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<villa>> UpdateVillas(int id , villaUpdateDTO villaDTO)
+        {
+            try
+            {
+                if (villaDTO == null)
+                {
+                    return BadRequest("Villa data is required");
+                }
+
+                if (id != villaDTO.Id)
+                {
+                    return BadRequest("Villa ID in url dose not match Villa ID in request body");
+                }
+
+                var existingVilla = await _db.villa.FirstOrDefaultAsync(u => u.Id == id);
+
+                if (existingVilla == null)
+                {
+                    return NotFound($"Villa with ID {id} Was not Found");
+                }
+
+
+               _mapper.Map(villaDTO, existingVilla);
+                existingVilla.UpdatedDate = DateTime.Now;
+                await _db.SaveChangesAsync();
+                return Ok(villaDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error occured while Updating the  villa : {ex.Message}");
+            }
+        }
     }
     
 

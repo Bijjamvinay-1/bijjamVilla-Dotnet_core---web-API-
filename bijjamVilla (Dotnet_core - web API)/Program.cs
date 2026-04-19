@@ -19,7 +19,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper( o =>
 {
-    o.CreateMap <villaCreateDTO, villa> ();        //.CreateMap <source , destination> ()
+    o.CreateMap<villaCreateDTO, villa> ();        //.CreateMap <source , destination> ()
+    o.CreateMap<villaUpdateDTO, villa> ();
 
 });
 var app = builder.Build();
