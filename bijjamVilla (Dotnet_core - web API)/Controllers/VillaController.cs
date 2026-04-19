@@ -64,7 +64,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                     
                  await _db.villa.AddAsync(Villa);
                 await _db.SaveChangesAsync();
-                return Ok(villaDTO);
+                return CreatedAtAction(nameof(CreateVillas), new {id =Villa.Id},Villa);
             }
             catch (Exception ex)
             {
