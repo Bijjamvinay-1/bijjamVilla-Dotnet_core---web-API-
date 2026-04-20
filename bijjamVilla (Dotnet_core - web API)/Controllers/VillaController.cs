@@ -95,8 +95,14 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                     return NotFound($"Villa with ID {id} Was not Found");
                 }
 
+                var DuplicateVilla = await _db .villa.FirstOrDefaultAsync(u => u.Name.ToLower() == villaDTO.Name.ToLower() && u.Id != id);
 
-               _mapper.Map(villaDTO, existingVilla);
+                if (DuplicateVilla != null)
+                {
+                    return Conflict($"Villa with name {villaDTO.Name} already exists");
+                }
+
+                _mapper.Map(villaDTO, existingVilla);
                 existingVilla.UpdatedDate = DateTime.Now;
                 await _db.SaveChangesAsync();
                 return Ok(villaDTO);
