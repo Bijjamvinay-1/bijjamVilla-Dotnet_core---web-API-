@@ -107,6 +107,28 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                     $"Error occured while Updating the  villa : {ex.Message}");
             }
         }
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<villa>> DeleteVillas(int id)
+        {
+            try
+            { 
+                var existingVilla = await _db.villa.FirstOrDefaultAsync(u => u.Id == id);
+
+                if (existingVilla == null)
+                {
+                    return NotFound($"Villa with ID {id} Was not Found");
+                }
+                
+                _db.villa.Remove(existingVilla);
+                await _db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error occured while Deleting the  villa : {ex.Message}");
+            }
+        }
     }
     
 
