@@ -22,13 +22,14 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<villa>>> GetVillas()
+        public async Task<ActionResult<IEnumerable<villaDTO>>> GetVillas()
         {
-            return Ok(await _db.villa.ToListAsync());
+            var villas = await _db.villa.ToListAsync();
+            return Ok(_mapper.Map<List<villaDTO>>(villas));
         }
 
         [HttpGet("{id:Int}")]
-        public async Task<ActionResult<villa>> GetVillas(int id)
+        public async Task<ActionResult<villaDTO>> GetVillas(int id)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                     return NotFound($"Villa with ID {id} Was not Found");
                 }
 
-                return Ok(villa);
+                return Ok(_mapper.Map<villaDTO>(villa));
             }
             catch (Exception ex)
             {
@@ -52,7 +53,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<villa>> CreateVillas(villaCreateDTO villaDTO)
+        public async Task<ActionResult<villaDTO>> CreateVillas(villaCreateDTO villaDTO)
         {
             try
             {
@@ -60,11 +61,19 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                 {
                     return BadRequest("Villa data is required");
                 }
+
+                var DuplicateVilla = await _db.villa.FirstOrDefaultAsync(u => u.Name.ToLower() == villaDTO.Name.ToLower());
+
+                if (DuplicateVilla != null)
+                {
+                    return Conflict($"Villa with name {villaDTO.Name} already exists");
+                }
+
                 villa Villa = _mapper.Map<villa>(villaDTO);
                     
                  await _db.villa.AddAsync(Villa);
                 await _db.SaveChangesAsync();
-                return CreatedAtAction(nameof(CreateVillas), new {id =Villa.Id},Villa);
+                return CreatedAtAction(nameof(CreateVillas), new {id =Villa.Id},_mapper.Map<villaDTO>(Villa));
             }
             catch (Exception ex)
             {
@@ -74,7 +83,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<villa>> UpdateVillas(int id , villaUpdateDTO villaDTO)
+        public async Task<ActionResult<villaDTO>> UpdateVillas(int id , villaUpdateDTO villaDTO)
         {
             try
             {
@@ -105,7 +114,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                 _mapper.Map(villaDTO, existingVilla);
                 existingVilla.UpdatedDate = DateTime.Now;
                 await _db.SaveChangesAsync();
-                return Ok(villaDTO);
+                return Ok(_mapper.Map<villaDTO>(existingVilla));
             }
             catch (Exception ex)
             {
@@ -114,7 +123,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             }
         }
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<villa>> DeleteVillas(int id)
+        public async Task<ActionResult<villaDTO>> DeleteVillas(int id)
         {
             try
             { 
@@ -127,7 +136,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                 
                 _db.villa.Remove(existingVilla);
                 await _db.SaveChangesAsync();
-                return Ok();
+                return Ok(_mapper.Map<villaDTO>(existingVilla));
             }
             catch (Exception ex)
             {
