@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 
 using bijjamVilla__Dotnet_core___web_API_.Data;
 using bijjamVilla__Dotnet_core___web_API_.DTO;
@@ -28,14 +27,21 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             return Ok(_mapper.Map<List<villaDTO>>(villas));
         }
 
-        [HttpGet("{id:Int}")]
-        public async Task<ActionResult<villaDTO>> GetVillas(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ApiResponse<villaDTO>>> GetVillas(int id)
         {
             try
             {
                 if (id <= 0)
                 {
-                    return BadRequest("Villa ID must be greater then 0");
+                    return new ApiResponse<villaDTO>()
+                    {
+                        Success = false,
+                        Errors = "Villa ID must be greater than 0" ,
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Bad Request"
+                        
+                    };
                 }
 
                 var villa = await _db.villa.FirstOrDefaultAsync(v => v.Id == id);
@@ -43,8 +49,14 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                 {
                     return NotFound($"Villa with ID {id} Was not Found");
                 }
-
-                return Ok(_mapper.Map<villaDTO>(villa));
+                return new ApiResponse<villaDTO>()
+                {
+                    Success = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = $"Villa with ID {id} retrieved successfully",
+                    Data = _mapper.Map<villaDTO>(villa),
+                    Timestamp = DateTime.UtcNow
+                };
             }
             catch (Exception ex)
             {
