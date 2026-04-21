@@ -28,7 +28,7 @@
            Create(true, 201, message, data);
 
         public static ApiResponse<TData> Nocontent(string message = "Operation completed successfully") =>
-            Create(false, 404, message);
+            Create(false, 204, message);
         public static ApiResponse<TData> NotFound(string message ="Resource not found") =>
             Create(false, 404, message);
 

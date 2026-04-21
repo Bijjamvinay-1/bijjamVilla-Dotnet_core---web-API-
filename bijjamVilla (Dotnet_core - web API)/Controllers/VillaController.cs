@@ -21,6 +21,8 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<villaDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<villaDTO>>>> GetVillas()
         {
             var villas = await _db.villa.ToListAsync();
@@ -30,6 +32,9 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse<villaDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse<villaDTO>>> GetVillas(int id)
         {
             try
@@ -54,6 +59,10 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             }
         }
         [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<villaDTO>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ApiResponse<villaDTO>>> CreateVillas(villaCreateDTO villaDTO)
         {
             try
@@ -85,6 +94,11 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse<villaDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<villaDTO>> UpdateVillas(int id , villaUpdateDTO villaDTO)
         {
             try
@@ -126,6 +140,9 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             }
         }
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse<villaDTO>>> DeleteVillas(int id)
         {
             try
