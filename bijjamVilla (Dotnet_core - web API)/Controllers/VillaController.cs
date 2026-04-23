@@ -4,6 +4,7 @@ using bijjamVilla__Dotnet_core___web_API_.Data;
 using bijjamVilla__Dotnet_core___web_API_.DTO;
 using bijjamVilla__Dotnet_core___web_API_.Model;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<villaDTO>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<villaDTO>>>> GetVillas()

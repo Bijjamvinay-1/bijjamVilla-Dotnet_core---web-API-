@@ -19,7 +19,7 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         [ProducesResponseType(typeof(ApiResponse<UserDTO>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
@@ -51,5 +51,37 @@ namespace bijjamVilla__Dotnet_core___web_API_.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ApiResponse<object>.Error(StatusCodes.Status500InternalServerError, "An error occurred while processing the request"));
             }
         }
+
+        [HttpPost("login")]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<LoginResponseDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse<LoginResponseDTO>>> Login([FromBody] LoginRequestDTO loginRequestDTO)
+        {
+            try
+            {
+                //auth service
+                if (loginRequestDTO == null)
+                {
+                    return BadRequest(ApiResponse<object>.Badrequest("Login data is required"));
+                }
+
+                var loginResponse = await _authService.LoginAsync(loginRequestDTO);
+
+                if (loginResponse == null)
+                {
+                    return BadRequest(ApiResponse<object>.Badrequest("Login Failed may be Invalid email or password "));
+                }
+
+                var response = ApiResponse<LoginResponseDTO>.OK(loginResponse, "User logged in successfully");
+
+               return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiResponse<object>.Error(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request {ex.Message}") );
+            }
+        }
+
     }
 }

@@ -40,6 +40,8 @@
 
         public static ApiResponse<TData> Error(int StatusCode, string message, object? errors = null) =>
             Create(false, StatusCode, message, errors: errors);
+
+       
     }
 
 }
