@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
 using bijjamVilla__Dotnet_core___web_API_.Data;
-using bijjamVilla__Dotnet_core___web_API_.DTO;
+using BijjamVillaDTO;
 using bijjamVilla__Dotnet_core___web_API_.Model;
 
 using Microsoft.AspNetCore.Authorization;

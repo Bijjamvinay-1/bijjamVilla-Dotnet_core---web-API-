@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="bijjamVilla (Dotnet_core - web API)/bijjamVilla (Dotnet_core _web API).csproj" />
+  <Project Path="bijjamVilla (Web MVC)/bijjamVilla (Web MVC).csproj" Id="8b75a312-c1f3-421f-a0e0-936f37bd6ba5" />
+  <Project Path="BijjamVillaDTO/BijjamVillaDTO.csproj" Id="d546d19c-f471-4f4f-ae89-af26919d43b3" />
 </Solution>

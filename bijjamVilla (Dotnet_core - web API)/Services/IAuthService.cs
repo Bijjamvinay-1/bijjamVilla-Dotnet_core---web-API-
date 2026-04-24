@@ -1,5 +1,4 @@
-﻿using bijjamVilla__Dotnet_core___web_API_.DTO;
-
+﻿using BijjamVillaDTO;
 namespace bijjamVilla__Dotnet_core___web_API_.Services
 {
     public interface IAuthService

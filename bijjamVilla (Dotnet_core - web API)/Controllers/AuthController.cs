@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 
 using bijjamVilla__Dotnet_core___web_API_.Data;
-using bijjamVilla__Dotnet_core___web_API_.DTO;
 using bijjamVilla__Dotnet_core___web_API_.Services;
+
+using BijjamVillaDTO;
 
 using Microsoft.AspNetCore.Mvc;
 
