@@ -15,5 +15,6 @@ namespace bijjamVilla__Dotnet_core___web_API_.Model
         public string? ImageUrl { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
+        public ICollection<VillaAmenities>? Amenities { get; set; }
     }
 }

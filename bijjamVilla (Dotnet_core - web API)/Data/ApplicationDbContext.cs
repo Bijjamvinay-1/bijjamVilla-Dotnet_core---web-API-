@@ -9,6 +9,8 @@ namespace bijjamVilla__Dotnet_core___web_API_.Data
         public DbSet<villa> villa { get; set; }
         public DbSet<User> Users { get; set; }
 
+        public DbSet<VillaAmenities> VillaAmenities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
